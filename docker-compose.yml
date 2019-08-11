@@ -1,0 +1,36 @@
+version: "3"
+services:
+  mongo-service:
+    image: mongo:latest
+    container_name: mongo-container-track
+    network_mode: host
+    restart: always
+  api-gateway-service:
+    image: api-gateway-image
+    build: api-gateway-pattern/.
+    network_mode: host
+    container_name: api-gateway-container
+  config-server-service:
+    image: config-server-image
+    build: config-server/.
+    network_mode: host
+    container_name: config-server-container
+  eureka-server-service:
+    image: eureka-server-image
+    build: eureka-server/.
+    network_mode: host
+    container_name: eureka-server-container
+  track-service:
+    image: track-service-image
+    build: track-service/.
+    network_mode: host
+    container_name: track-service-container
+    depends_on:
+      - mongo-service
+      - eureka-server-service
+      - config-server-service
+  user-service:
+    image: user-service-image
+    build: user-service/.
+    network_mode: host
+    container_name: user-service-container
